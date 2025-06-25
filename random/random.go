@@ -6,9 +6,6 @@ import (
 	"math/rand"
 )
 
-type BalancerBuilder interface {
-	Builder()
-}
 type Balancer struct{}
 
 func (b *Balancer) Pick(ctx context.Context, nodes []selector.Node) (selector.Node, error) {

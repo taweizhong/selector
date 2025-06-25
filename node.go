@@ -3,7 +3,7 @@ package selector
 type DefaultNode struct {
 	scheme   string
 	addr     string
-	weight   *int64
+	weight   float64
 	version  string
 	name     string
 	metadata map[string]string
@@ -24,11 +24,6 @@ func (n *DefaultNode) ServiceName() string {
 	return n.name
 }
 
-// InitialWeight is node initialWeight
-func (n *DefaultNode) InitialWeight() *int64 {
-	return n.weight
-}
-
 // Version is node version
 func (n *DefaultNode) Version() string {
 	return n.version
@@ -38,12 +33,14 @@ func (n *DefaultNode) Version() string {
 func (n *DefaultNode) Metadata() map[string]string {
 	return n.metadata
 }
-
-func NewDefaultNode(scheme string, addr string, weight int64) *DefaultNode {
+func (n *DefaultNode) Weight() float64 {
+	return n.weight
+}
+func NewDefaultNode(scheme string, addr string, weight float64) *DefaultNode {
 	return &DefaultNode{
 		scheme:   scheme,
 		addr:     addr,
-		weight:   &weight,
+		weight:   weight,
 		version:  "0.0.1",
 		metadata: make(map[string]string),
 	}
