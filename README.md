@@ -53,3 +53,28 @@ node, err := s.Select(ctx)
 ```
 
 Select函数会将选择之后的节点存储到ctx中，方便传递到下一步骤。
+
+#### 加权轮训
+
+根据节点的权重返回节点。
+
+```
+func Test_WRR(t *testing.T) {
+	var nodesLog map[string]int
+	nodesLog = make(map[string]int)
+	var nodes []selector.Node
+	nodes = append(nodes, selector.NewDefaultNode("http", "127.0.0.1:9090", 6))
+	nodes = append(nodes, selector.NewDefaultNode("http", "127.0.0.1:9091", 3))
+	nodes = append(nodes, selector.NewDefaultNode("http", "127.0.0.1:9092", 1))
+	wrr := New()
+	wrr.Appy(nodes)
+	for i := 0; i < 100; i++ {
+		node, _ := wrr.Select(context.Background())
+		nodesLog[node.Address()]++
+	}
+	for k, v := range nodesLog {
+		fmt.Println(k, v)
+	}
+}
+```
+
